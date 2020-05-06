@@ -1,0 +1,38 @@
+esphome:
+  name: valvula
+  platform: ESP8266
+  board: esp01_1m
+
+wifi:
+  ssid: "belkin.756"
+  password: "86dfmfbb"
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "Valvula Fallback Hotspot"
+    password: "vDOT2YSDWKlx"
+
+captive_portal:
+
+# Enable logging
+logger:
+
+# Enable Home Assistant API
+api:
+  services:
+    - service: controlar_valvula
+      variables:
+        target: int
+      then:
+        - stepper.set_target:
+            id: valvula
+            target: !lambda 'return target;'
+
+ota:
+
+stepper:
+  - platform: a4988
+    id: valvula
+    step_pin: GPIO1
+    dir_pin: GPIO2
+    max_speed: 250 steps/s
