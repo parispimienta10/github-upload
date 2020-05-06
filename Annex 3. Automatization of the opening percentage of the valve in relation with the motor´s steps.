@@ -1,0 +1,8 @@
+- alias: Escribir valor de la valvula
+  trigger:
+    platform: state
+    entity_id: input_number.valvula
+  action:
+    - service: esphome.valvula_controlar_valvula
+      data_template:
+        target: '{{ ((trigger.to_state.state | int * 1400) / 100) | int }}'
